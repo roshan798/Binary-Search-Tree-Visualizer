@@ -28,7 +28,6 @@ let find = (key, root) => {
             return;
     }
     else if (root.children != undefined && root.children.length == 2) {
-        // console.log("else if")
         if (root.name > key) {
             setTimeout(find, 700, key, root.children[0]);
         }
@@ -37,7 +36,6 @@ let find = (key, root) => {
         }
     }
     else if (root.children != undefined && root.children.length == 1) {
-        // console.log("else")
 
         if (root.name > key && root.name > root.children[0].name) {
             setTimeout(find, 600, key, root.children[0]);
@@ -47,12 +45,12 @@ let find = (key, root) => {
         }
         else {
             refreshTreeStructure(null);
-            alert(`${key} is no present in the tree`);
+            alert(`${key} is not present in the tree`);
         }
     }
     else {
         refreshTreeStructure(null);
-        alert(`${key} is no present in the tree`);
+        alert(`${key} is not present in the tree`);
     }
 }
 
@@ -67,7 +65,7 @@ insertForm.addEventListener("submit", e => {
     }, 50, insert);
 
     if (value == "" || Number.isInteger(parseInt(value)) == false) {
-        alert("wrong input");
+        alert("Invalid input");
     }
     else {
         bst.insert(value);
@@ -85,7 +83,7 @@ searchForm.addEventListener("submit", e => {
         search.inputMode = "numeric";
     }, 50, search);
     if (value == "" || Number.isInteger(value) == false) {
-        alert("wrong input");
+        alert("Invalid input");
     }
     else {
         willDelete = false;
@@ -104,7 +102,7 @@ removeForm.addEventListener("submit", e => {
     }, 50, remove);
 
     if (value == "" || Number.isInteger(parseInt(value)) == false) {
-        alert("wrong input");
+        alert("Invalid input");
     }
     else {
         willDelete = true;
