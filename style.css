@@ -1,0 +1,110 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  background: #d1d1d1;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+path.link {
+  stroke: #333;
+  stroke-width: 1.5px;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 3px;
+}
+.node  text{
+  fill: steelblue;
+}
+.node text {
+  font: 12px sans-serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 2px;
+}
+
+.recent circle {
+  fill: #8b5353;
+  stroke-width: 3px;
+  stroke: rgb(127, 228, 59);
+
+}
+.recent text {
+  fill: rgb(114, 255, 19);
+}
+svg {
+  margin-top: 1rem;
+}
+form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: auto;
+  margin: 5px;
+}
+
+input {
+  outline: none;
+  line-height: 1.3rem;
+  font-size: 1.1rem;
+  padding: 2px 5px;
+  border: 2px solid rgb(0, 66, 66);
+  border-radius: 5px;
+  background: #d1c2c2;
+  color: rgb(0, 195, 230);
+}
+.btn {
+  background: gray;
+  font-size: 1.1rem;
+  width: 100px;
+  padding: 0.2rem 0;
+  margin-left: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.btn[type="submit"] {
+  width: 40px;
+}
+.form-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+}
+.traversals {
+  width: 400px;
+}
+.navbar {
+  width: 100%;
+  text-align: center;
+  background: linear-gradient(68deg, rgb(82, 54, 54), #976767);
+  margin: 0;
+  padding: 0;
+  font-size: 1.5rem;
+  line-height: 3rem;
+  color: yellowgreen;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  letter-spacing: 2px;
+}
+
+@media only screen and (max-width: 1000px) {
+  .traversals {
+    margin-right: auto;
+  }
+  .form-container {
+    justify-content: flex-start;
+    gap: 1rem;
+    margin-left: 2rem;
+  }
+}
