@@ -1,87 +1,164 @@
- export const plot = (treeData,currValue)=>{
-    // console.log(treeData);
-    var margin = { top: 50, right: 0, bottom: 100, left: 0 },
-      width = window.innerWidth - margin.left - margin.right - 30,
-      height = window.innerHeight - margin.top - margin.bottom - 150;
+export const plot = (treeData, currValue,isInserting) => {
+  var margin = { top: 50, right: 10, bottom: 50, left: 10 },
+    width = window.innerWidth - margin.left - margin.right - 250 + ((window.innerWidth >= 760) ? 0 : 70),
+    height = window.innerHeight - margin.top - margin.bottom - 100;
+  var treemap = d3.tree().size([width, height]);
+  var nodes = d3.hierarchy(treeData);
+  nodes = treemap(nodes);
+  console.log(window.innerWidth);
+  var svg = d3
+    .select("body")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .attr("transform", `translate( ${150 +((window.innerWidth >= 760) ? 100 : 30)},${0})`),
+    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  addLink(g,nodes,currValue,isInserting);
+  addNode(g,nodes, currValue,isInserting);
+};
 
-    // declares a tree layout and assigns the size
-    var treemap = d3.tree().size([width, height]);
+export function getPosition(val) {
+let textElements = d3.selectAll("text")
+  .filter(function() {
+    return d3.select(this).text() == val;
+  });
 
-    //  assigns the data to a hierarchy using parent-child relationships
-    var nodes = d3.hierarchy(treeData);
+  let position;
+textElements.each(function(d,i) {
+  position = this.getBoundingClientRect(); // Get bounding box
+});
+return position;
+}
+function addNode(g,nodes, currValue,isInserting) {
+  var node = g
+    .selectAll(".node")
+    .data(nodes.descendants())
+    .enter()
+    .append("g")
+    .attr("class", function (d) {
+      return "node" + (d.children ? " node--internal" : " node--leaf") + (d.data.name == currValue ? " recent" : "");
+    })
+    .attr("transform", function (d) {
+      // console.log(d.data.name + " ->");
+      // console.log(d);
+      if (isInserting==true && d.parent && d.data.name == currValue) {
+        return "translate(" + d.parent.x + "," + d.parent.y + ")";
+      } else {
+        return "translate(" + d.x + "," + d.y + ")";
+      }
+    });
+  node
+    .transition()
+    .duration(1000)
+    .attr("transform", d => {
+      return "translate(" + d.x + "," + d.y + ")";
+    });
+  node.append("circle")
+    .attr("r", function (d) {
+      return d.data.name == currValue ? 5 : 20;
+    })
+    .transition()
+    .duration(function (d) {
+      return d.data.name == currValue ? 500 : 0;
+    })
+    .attr("r", d=>{
+      if(Math.abs(d.data.name) > 1000) return 25;
+      return 20;
+    });
 
-    // maps the node data to the tree layout
-    nodes = treemap(nodes);
+  node
+    .append("text")
+    .attr("dy", ".35em")
+    .attr("y", function (d) {
+      return 0;
+    })
+    .style("text-anchor", "middle")
+    .text(function (d) {
+      return d.data.name;
+    });
+}
 
-    // append the svg obgect to the body of the page
-    // appends a 'group' element to 'svg'
-    // moves the 'group' element to the top left margin
-    var svg = d3
-        .select("body")
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .attr("transform",`translate( ${15},${2})`),
-      g = svg
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    // adds the links between the nodes
-    var link = g
-      .selectAll(".link")
-      .data(nodes.descendants().slice(1))
-      .enter()
-      .append("path")
-      .attr("class", "link")
-      .attr("d", function(d) {
-        return (
+function addLink(g,nodes,currValue,isInserting) {
+  var link = g
+    .selectAll(".link")
+    .data(nodes.descendants().slice(1))
+    .enter()
+    .append("path")
+    .attr("class", function (d) {
+      return "link" + (d.data.name == currValue ? " recent" : "");
+    })
+    .attr("d", function (d) {
+      let s;
+      if (isInserting==true && d.data.name == currValue) {
+        s = (
           "M" +
-          d.x +
+          d.parent.x +
           "," +
-          d.y +
+          d.parent.y +
           "C" +
-          d.x +
+          d.parent.x +
           "," +
-          (d.y + d.parent.y) / 2 +
+          d.parent.y +
           " " +
           d.parent.x +
           "," +
-          (d.y + d.parent.y) / 2 +
+          d.parent.y +
           " " +
           d.parent.x +
           "," +
           d.parent.y
         );
-      });
+      }
+      else {
+        s = (
+          "M" +
+          d.parent.x +
+          "," +
+          d.parent.y +
+          "C" +
+          d.parent.x +
+          "," +
+          (d.y + d.parent.y) / 2 +
+          " " +
+          d.x +
+          "," +
+          (d.y + d.parent.y) / 2 +
+          " " +
+          d.x +
+          "," +
+          d.y
+        );
+      }
+      return s;
+    });
+  addLinkTransition(link,currValue);
 
-    // adds each node as a group
-    var node = g
-      .selectAll(".node")
-      .data(nodes.descendants())
-      .enter()
-      .append("g")
-      .attr("class", function(d) {
-
-        return "node" + (d.children ? " node--internal" : " node--leaf") + (d.data.name == currValue ? " recent" : "");
-      })
-      .attr("transform", function(d) {
-        return "translate(" + d.x + "," + d.y + ")";
-      });
-
-    // adds the circle to the node
-    
-
-    node.append("circle").attr("r", 20);
-
-    // adds the text to the node
-    node
-      .append("text")
-      .attr("dy", ".35em")
-      .attr("y", function(d) {
-        return 0;
-      })
-      .style("text-anchor", "middle")
-      .text(function(d) {
-        return d.data.name;
-      });
+}
+function addLinkTransition(link,currValue) {
+  link.transition()
+    .duration(1000)
+    .attr("d", function (d) {
+      // if(d.data.name == currValue) return "";
+      // console.log("inside transition - " + d.data.name);
+      let s = (
+        "M" +
+        d.parent.x +
+        "," +
+        d.parent.y +
+        "C" +
+        d.parent.x +
+        "," +
+        (d.y + d.parent.y) / 2 +
+        " " +
+        d.x +
+        "," +
+        (d.y + d.parent.y) / 2 +
+        " " +
+        d.x +
+        "," +
+        d.y
+      );
+      // console.log(s);
+      return s;
+    });
 }

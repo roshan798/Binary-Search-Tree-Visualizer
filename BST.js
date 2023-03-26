@@ -61,7 +61,6 @@ export class BST {
     }
 
     remove(data) {
-        console.log(data);
         this.root = this.removeNode(this.root, data);
     }
     removeNode(node, key) {

@@ -10,6 +10,7 @@
       src="https://kit.fontawesome.com/e8fbb55064.js"
       crossorigin="anonymous"
     ></script>
+    <script src="./app.js" type="module" defer></script>
   </head>
   <body>
     <nav class="navbar">
@@ -17,7 +18,12 @@
     </nav>
     <div class="form-container">
       <form action="" id="form1">
-        <input type="text" id="insert" placeholder="Insert a node" inputmode="numeric"/>
+        <input
+          type="text"
+          id="insert"
+          placeholder="Insert"
+          inputmode="numeric"
+        />
         <label for="insert">
           <button type="submit" id="insert-btn" class="btn">
             <i class="fa-sharp fa-solid fa-plus"></i>
@@ -25,27 +31,37 @@
         </label>
       </form>
       <form action="" id="form2">
-        <input type="text" id="remove" placeholder="Remove a node" inputmode="numeric"/>
+        <input
+          type="text"
+          id="remove"
+          placeholder="Remove"
+          inputmode="numeric"
+        />
         <label for="remove">
           <button type="submit" id="remove-btn" class="btn">
             <i class="fa-solid fa-trash"></i></button
         ></label>
       </form>
       <form action="" id="form3">
-        <input type="text" id="find" placeholder="Find node" inputmode="numeric"/>
+        <input type="text" id="find" placeholder="Find" inputmode="numeric" />
         <label for="remove">
           <button type="submit" id="find-btn" class="btn">
             <i class="fa-solid fa-search"></i></button
         ></label>
       </form>
-      <!-- <div class="traversals">
-        <button class="btn" type="button" id="preorder">Preorder</button>
-        <button class="btn" type="button">Inorder</button>
-        <button class="btn" type="button">Postorder</button>
+      <div class="traversals">
+        <button id="pre" class="traversal">Preorder</button>
+        <button id="post" class="traversal">Postorder</button>
+        <button id="in" class="traversal">Inorder</button>
+        <button id="level" class="traversal">Level order</button>
       </div>
-    </div> -->
-    <script src="./app.js" type="module"></script>
+      <div class="box">
+        <h3 id="message-heading"></h3>
+        <div id="message"></div>
+      </div>
+    </div>
+    <!-- <div id="circle"> -->
+
+    </div>
   </body>
 </html>
-
-<!-- objective k baad highlights -->

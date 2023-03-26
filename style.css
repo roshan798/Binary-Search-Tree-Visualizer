@@ -1,28 +1,29 @@
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 body {
-  background: #d1d1d1;
-  margin: 0;
+  font-family: sans-serif;
+  background: #363535;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-
 path.link {
-  stroke: #333;
+  stroke: #0f0000;
   stroke-width: 1.5px;
 }
 
 .node circle {
   fill: #fff;
-  stroke: steelblue;
+  stroke: rgba(27, 123, 201, 0.664);
   stroke-width: 3px;
 }
-.node  text{
-  fill: steelblue;
+.node text {
+  fill: rgb(0, 23, 100);
 }
 .node text {
-  font: 12px sans-serif;
+  font: 13px sans-serif;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -34,36 +35,31 @@ path.link {
 }
 
 .recent circle {
-  fill: #8b5353;
-  stroke-width: 3px;
+  fill: #000550;
+  stroke-width: 4px;
   stroke: rgb(127, 228, 59);
-
 }
 .recent text {
-  fill: rgb(114, 255, 19);
-}
-svg {
-  margin-top: 1rem;
+  fill: rgb(101, 252, 1);
 }
 form {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  margin: auto;
   margin: 5px;
 }
 
 input {
   outline: none;
+  width: 175px;
   line-height: 1.3rem;
   font-size: 1.1rem;
-  padding: 2px 5px;
+  padding: 2px 8px;
   border: 2px solid rgb(0, 66, 66);
   border-radius: 5px;
   background: #d1c2c2;
-  color: rgb(0, 195, 230);
+  color: rgb(0, 0, 0);
 }
-.btn {
+.btn,
+.traversal {
   background: gray;
   font-size: 1.1rem;
   width: 100px;
@@ -77,34 +73,61 @@ input {
   width: 40px;
 }
 .form-container {
+  height: calc(100% - 3rem);
+  width: 250px;
+  position: absolute;
+  left: 0;
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-around;
+  flex-direction: column;
+  padding-left: 1rem;
 }
 .traversals {
-  width: 400px;
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
 .navbar {
   width: 100%;
+  height: 3rem;
   text-align: center;
   background: linear-gradient(68deg, rgb(82, 54, 54), #976767);
-  margin: 0;
-  padding: 0;
   font-size: 1.5rem;
   line-height: 3rem;
   color: yellowgreen;
   font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
   letter-spacing: 2px;
 }
-
-@media only screen and (max-width: 1000px) {
-  .traversals {
-    margin-right: auto;
-  }
+.box {
+  width: 100%;
+  margin-top: 2rem;
+  padding-right: 5px;
+}
+#message-heading {
+  text-align: center;
+  margin: 5px;
+}
+#message {
+  background-color: rgba(10, 0, 20, 0.911);
+  color: #dfdfdf;
+  font-size: calc(1rem + 1px);
+  border-radius: 4px;
+}
+@media only screen and (max-width: 768px) {
   .form-container {
     justify-content: flex-start;
     gap: 1rem;
-    margin-left: 2rem;
+    margin-left: 0;
+    width: 150px;
+  }
+  input {
+    width: 100px;
+  }
+  .navbar {
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+  }
+  .traversals {
+    grid-template-columns: repeat(1, 1fr);
   }
 }
