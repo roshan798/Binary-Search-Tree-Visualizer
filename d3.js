@@ -5,13 +5,12 @@ export const plot = (treeData, currValue,isInserting) => {
   var treemap = d3.tree().size([width, height]);
   var nodes = d3.hierarchy(treeData);
   nodes = treemap(nodes);
-  console.log(window.innerWidth);
   var svg = d3
     .select("body")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-    .attr("transform", `translate( ${150 +((window.innerWidth >= 760) ? 100 : 30)},${0})`),
+    .attr("transform", `translate( ${150 +((window.innerWidth >= 760) ? 80 : 10)},${0})`),
     g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   addLink(g,nodes,currValue,isInserting);
   addNode(g,nodes, currValue,isInserting);
@@ -39,8 +38,6 @@ function addNode(g,nodes, currValue,isInserting) {
       return "node" + (d.children ? " node--internal" : " node--leaf") + (d.data.name == currValue ? " recent" : "");
     })
     .attr("transform", function (d) {
-      // console.log(d.data.name + " ->");
-      // console.log(d);
       if (isInserting==true && d.parent && d.data.name == currValue) {
         return "translate(" + d.parent.x + "," + d.parent.y + ")";
       } else {
@@ -138,8 +135,6 @@ function addLinkTransition(link,currValue) {
   link.transition()
     .duration(1000)
     .attr("d", function (d) {
-      // if(d.data.name == currValue) return "";
-      // console.log("inside transition - " + d.data.name);
       let s = (
         "M" +
         d.parent.x +
@@ -158,7 +153,6 @@ function addLinkTransition(link,currValue) {
         "," +
         d.y
       );
-      // console.log(s);
       return s;
     });
 }

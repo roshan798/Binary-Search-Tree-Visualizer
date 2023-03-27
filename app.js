@@ -4,7 +4,7 @@ import { getPosition } from "./d3.js";
 
 var bst = new BST();
 var tree;
-let delay = 800;
+let delay = 500;
 let isRunningSomething = false;
 let willDelete = false;
 let refreshTreeStructure = (currValue, isInserting) => {
@@ -20,17 +20,12 @@ let refreshTreeStructure = (currValue, isInserting) => {
     if (tree != undefined)
         plot(tree, currValue, isInserting);
 }
-bst.insert("12");
-bst.insert("134");
 
-bst.insert("24");
-bst.insert("10");
-
+bst.insert(parseInt(Math.random()*100))
 refreshTreeStructure();
 let find = (key, root) => {
     if (root == undefined) return;
     refreshTreeStructure(root.name);
-    move(root.name);
     if (root.name == key) {
         changeHeading(`${key} Found`);
         clearMeassge();
@@ -70,12 +65,14 @@ let find = (key, root) => {
     }
 }
 let forms = Array.from(document.forms);
-
 forms.forEach((form) => {
     form.addEventListener("submit", (event) => {
         event.preventDefault();
         if (isRunningSomething == false) {
             isRunningSomething = true;
+            changeHeading("Message");
+            clearMeassge();
+            let msg = "";
             let inputBox = event.target[0];
             let value = inputBox.value;
             inputBox.inputMode = "none";
@@ -84,12 +81,13 @@ forms.forEach((form) => {
             }, 50);
             inputBox.value = "";
             if (value == "" || Number.isInteger(parseInt(value)) == false) {
-                alert("wrong input");
+                msg = "Wrong input\nKindly insert an integer value.";
             }
             else {
                 switch (event.target.id) {
                     case 'form1':
                         bst.insert(value);
+                        msg = `${value} is inserted`;
                         refreshTreeStructure(value, true);
                         break;
                     case 'form2':
@@ -99,85 +97,20 @@ forms.forEach((form) => {
                     case 'form3':
                         willDelete = false;
                         find(value, tree);
+
                         break;
                 }
             }
+            appendMessage(msg);
             isRunningSomething = false;
         }
     });
 });
 
-function traverseTreeInPreorderWithGap(node) {
-    // If node is null or undefined, return a resolved promise
-    if (!node) return Promise.resolve();
-
-    // Return a new promise that resolves when the entire tree has been traversed in preorder
-    return new Promise((resolve) => {
-        // Perform the action for the current node
-        appendMessage(node.name);
-        move(node.name);
-        refreshTreeStructure(node.name);
-
-        // Wait for delay milliseconds before traversing the left subtree
-        setTimeout(() => {
-            // Traverse the left subtree in preorder, then traverse the right subtree in preorder
-            traverseTreeInPreorderWithGap(node.children && node.children[0]).then(() => {
-                traverseTreeInPreorderWithGap(node.children && node.children[1]).then(resolve);
-            });
-        }, delay);
-    });
-}
-
-function traverseTreeInPostorderWithGap(node) {
-    // Base case: return a resolved Promise if node is null or undefined
-    if (!node) return Promise.resolve();
-
-    // Return a Promise that resolves when traversal of the subtree rooted at node is complete
-    return new Promise((resolve) => {
-        // Move the node and update the display
-        move(node.name);
-        appendMessage(node.name);
-        refreshTreeStructure(node.name);
-
-        // Traverse the right subtree first, then the left, and finally resolve the Promise
-        setTimeout(() => {
-            traverseTreeInPostorderWithGap(node.children && node.children[1]).then(() => {
-                traverseTreeInPostorderWithGap(node.children && node.children[0]).then(resolve);
-            });
-        }, delay);
-    });
-}
-
-
-function traverseTreeInorderWithGap(node) {
-    // Base case: if node is null, return a resolved promise
-    if (!node) return Promise.resolve();
-
-    // Create a promise that will be resolved after a delay
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            // Traverse the left subtree recursively
-            traverseTreeInorderWithGap(node.children && node.children[0]).then(() => {
-                // Append message and refresh tree structure for the current node
-                appendMessage(node.name);
-                move(node.name);
-                refreshTreeStructure(node.name);
-
-                // If the current node is a leaf node, resolve the promise after a delay
-                if (!node.children) {
-                    setTimeout(() => {
-                        resolve();
-                    }, delay - 100);
-                }
-                // If the current node has a right subtree, traverse it recursively
-                else {
-                    traverseTreeInorderWithGap(node.children[1]).then(resolve);
-                }
-            });
-        }, delay);
-    });
-}
-
+document.getElementById("animation-delay")
+.addEventListener("input",(e)=>{
+    delay = e.target.value;
+});
 document.querySelectorAll(".traversal")
     .forEach(traversal => {
         traversal.addEventListener("click", e => {
@@ -185,40 +118,64 @@ document.querySelectorAll(".traversal")
             if (isRunningSomething == false) {
 
                 clearMeassge();
+                let arr = [];
                 switch (e.target.id) {
                     case "pre":
                         changeHeading("Preorder");
                         isRunningSomething = true;
-                        traverseTreeInPreorderWithGap(tree).then(() => {
-                            refreshTreeStructure();
-                            isRunningSomething = false
-                        });
+                       arr =  bst.getPreOrder();
+                       traverseArrayWithDelay(arr).then(() => {
+                           refreshTreeStructure();
+                           isRunningSomething = false;
+                      });
                         break;
                     case "post":
                         changeHeading("Postorder");
                         isRunningSomething = true;
-                        traverseTreeInPostorderWithGap(tree).then(() => {
-                            // console.log(isRunningSomething);
-                            refreshTreeStructure();
-                            isRunningSomething = false
-                        });
+                       arr =  bst.getPostOrder();
+                       traverseArrayWithDelay(arr).then(() => {
+                           refreshTreeStructure();
+                           isRunningSomething = false;
+                      });
                         break;
                     case "in":
                         changeHeading("Inorder");
                         isRunningSomething = true;
-                        traverseTreeInorderWithGap(tree).then(() => {
-                            refreshTreeStructure();
-                            isRunningSomething = false
-                        });
+                        arr =  bst.getInOrder();
+                       traverseArrayWithDelay(arr).then(() => {
+                           refreshTreeStructure();
+                           isRunningSomething = false;
+                      });
                         break;
                     case "level":
                         changeHeading("Level order");
-                        console.log(e);
+                        isRunningSomething = true;
+                       arr =  bst.getLevelOrder();
+                       traverseArrayWithDelay(arr).then(() => {
+                           refreshTreeStructure();
+                           isRunningSomething = false;
+                      });
+                        // console.log(e);
                 }
             }
 
         });
     });
+function traverseArrayWithDelay(array) {
+  return new Promise((resolve) => {
+    let index = 0;
+    const intervalId = setInterval(() => {
+      if (index >= array.length) {
+        clearInterval(intervalId);
+        resolve();
+      } else {
+        refreshTreeStructure(array[index]);
+        appendMessage(array[index]);
+        index++;
+      }
+    }, delay);
+  });
+}
 
 function changeHeading(meassge) {
     document.getElementById("message-heading")
@@ -237,13 +194,6 @@ function appendMessage(m) {
     else {
         messageBox.innerText += `, ${m}`;
     }
-}
-function move(num) {
-    console.log("i'll implement it sooner");
-    // let pos = getPosition(parseInt(num));
-    // let box = document.getElementById("circle");
-    // box.style.left = (pos.x - 15) + "px";
-    // box.style.top = (pos.y - 15) + "px";
 }
 function findInTree(val) {
     let flag = false;

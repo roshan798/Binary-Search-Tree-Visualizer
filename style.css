@@ -1,27 +1,39 @@
+:root {
+  --primary-color: rgb(23, 216, 216);
+  --secondary-color: rgba(16, 163, 163, 0.65);
+  --navbar-text-color: #4e07d3;
+  --circle-bg:#407c87;
+  --primary-font-size:1.1rem;
+}
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+
 body {
   font-family: sans-serif;
-  background: #363535;
+  background: linear-gradient(65deg,#1c2229,#2f3841);
   font-family: Arial, Helvetica, sans-serif;
+  height: 100vh;
 }
 
 path.link {
-  stroke: #0f0000;
-  stroke-width: 1.5px;
+  stroke: #030e24;
+  stroke-width: 2px;
 }
 
 .node circle {
-  fill: #fff;
-  stroke: rgba(27, 123, 201, 0.664);
-  stroke-width: 3px;
+  fill: var(--circle-bg);
+  stroke: #9ccd62;
+  stroke-width: 1.5px;
 }
+
 .node text {
-  fill: rgb(0, 23, 100);
+  fill: #ffdddd;
+  text-shadow: 1px 0px 3px #000;
 }
+
 .node text {
   font: 13px sans-serif;
   text-overflow: ellipsis;
@@ -30,17 +42,27 @@ path.link {
 
 .link {
   fill: none;
-  stroke: #ccc;
-  stroke-width: 2px;
 }
 
 .recent circle {
-  fill: #000550;
-  stroke-width: 4px;
-  stroke: rgb(127, 228, 59);
+  fill: #000550f5;
+  stroke-width: 2px;
+  stroke: rgb(143, 224, 89);
 }
+
 .recent text {
   fill: rgb(101, 252, 1);
+}
+.navbar {
+  width: 100%;
+  height: 3rem;
+  text-align: center;
+  background: linear-gradient(45deg, #FF5858, #E09820,#FF5858);
+  font-size: 1.5rem;
+  line-height: 3rem;
+  color: var(--navbar-text-color);
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  letter-spacing: 2px;
 }
 form {
   display: flex;
@@ -51,27 +73,32 @@ input {
   outline: none;
   width: 175px;
   line-height: 1.3rem;
-  font-size: 1.1rem;
+  font-size: var(--primary-font-size);
   padding: 2px 8px;
-  border: 2px solid rgb(0, 66, 66);
+  border: 1.5px solid var(--primary-color);
   border-radius: 5px;
-  background: #d1c2c2;
-  color: rgb(0, 0, 0);
+  background: #1c2229; 
+  color: #ccccccd5;
 }
-.btn,
-.traversal {
-  background: gray;
-  font-size: 1.1rem;
+
+.btn {
+  font-size: var(--primary-font-size);
   width: 100px;
   padding: 0.2rem 0;
   margin-left: 5px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  background-color: var(--primary-color);
+  box-shadow:inset 2px -1px 5px #1c2229;
+  text-shadow: 1px 0 15px #000;
+  color: #000313;
 }
+
 .btn[type="submit"] {
   width: 40px;
 }
+
 .form-container {
   height: calc(100% - 3rem);
   width: 250px;
@@ -80,39 +107,72 @@ input {
   display: flex;
   flex-direction: column;
   padding-left: 1rem;
+  margin-top: 1rem;
 }
+
 .traversals {
   margin-top: 1rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+  margin-top: 1.2rem;
 }
-.navbar {
-  width: 100%;
-  height: 3rem;
-  text-align: center;
-  background: linear-gradient(68deg, rgb(82, 54, 54), #976767);
-  font-size: 1.5rem;
-  line-height: 3rem;
-  color: yellowgreen;
-  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-  letter-spacing: 2px;
-}
+
+
+
 .box {
   width: 100%;
-  margin-top: 2rem;
+  margin-top: 1rem;
   padding-right: 5px;
 }
+
 #message-heading {
+  font-size: var(--primary-font-size);
   text-align: center;
   margin: 5px;
+  letter-spacing: 1px;
 }
+
 #message {
-  background-color: rgba(10, 0, 20, 0.911);
-  color: #dfdfdf;
+  background-color: var(--secondary-color);
+  color: #002427;
   font-size: calc(1rem + 1px);
   border-radius: 4px;
 }
+#animation-delay {
+  margin-top: 5px;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 10px;
+  background: #888;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+label[for="animation-delay"] {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: var(--primary-font-size);
+}
+#animation-delay::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#animation-delay::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
 @media only screen and (max-width: 768px) {
   .form-container {
     justify-content: flex-start;

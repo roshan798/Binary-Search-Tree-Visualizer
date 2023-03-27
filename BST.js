@@ -12,6 +12,52 @@ export class BST {
     getRoot() {
         return this.root;
     }
+    getPreOrder(){
+        let preorder = [];
+        let pre = (node)=>{
+            if(!node) return;
+            preorder.push(node.val);
+            pre(node.left);
+            pre(node.right);
+        }
+        pre(this.root);
+        return preorder;
+    }
+    getPostOrder(){
+        let postorder = [];
+        let post = (node)=>{
+            if(!node) return;
+            postorder.push(node.val);
+            post(node.right);
+            post(node.left);
+        }
+        post(this.root);
+        return postorder;
+    }
+    getInOrder(){
+        let inorder = [];
+        let inOrder = (node)=>{
+            if(!node) return;
+            inOrder(node.left);
+            inorder.push(node.val);
+            inOrder(node.right);
+        }
+        inOrder(this.root);
+        return inorder;
+    }
+    getLevelOrder(){
+        let levelorder = [];
+        if(!this.root) return levelorder;
+        let queue = [this.root];
+        let ptr = 0;
+        while(ptr<queue.length) {
+            let node = queue[ptr++];
+            levelorder.push(node.val);
+            if(node.left) queue.push(node.left);
+            if(node.right) queue.push(node.right);
+        } 
+        return levelorder;
+    }
     insert(val) {
         var newNode = new Node(parseInt(val));
         if (this.root == null)
