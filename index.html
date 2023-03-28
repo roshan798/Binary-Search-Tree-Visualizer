@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style.css" />
+    <link rel="icon" type="image/x-icon" href="favicon.png" />
     <title>Document</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script
@@ -50,12 +51,18 @@
         ></label>
       </form>
       <label for="animation-delay">Animation delay</label>
-      <input type="range" min="50" max="1000" value="500" id="animation-delay">
+      <input
+        type="range"
+        min="50"
+        max="1000"
+        value="500"
+        id="animation-delay"
+      />
 
       <div class="traversals">
         <button id="pre" class="traversal btn">Preorder</button>
         <button id="post" class="traversal btn">Postorder</button>
-        <button id="in" class="traversal btn ">Inorder</button>
+        <button id="in" class="traversal btn">Inorder</button>
         <button id="level" class="traversal btn">Level order</button>
       </div>
 
@@ -63,9 +70,6 @@
         <h4 id="message-heading"></h4>
         <div id="message"></div>
       </div>
-    </div>
-    <!-- <div id="circle"> -->
-
     </div>
   </body>
 </html>

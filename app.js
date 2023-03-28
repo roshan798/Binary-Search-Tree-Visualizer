@@ -1,12 +1,12 @@
 import { plot } from "./d3.js";
 import { BST } from "./BST.js";
-import { getPosition } from "./d3.js";
 
 var bst = new BST();
 var tree;
 let delay = 500;
 let isRunningSomething = false;
 let willDelete = false;
+
 let refreshTreeStructure = (currValue, isInserting) => {
     if (isInserting) {
         isInserting = !findInTree(currValue);
@@ -21,49 +21,75 @@ let refreshTreeStructure = (currValue, isInserting) => {
         plot(tree, currValue, isInserting);
 }
 
-bst.insert(parseInt(Math.random()*100))
+bst.insert(parseInt(Math.random()*100));
+bst.insert(parseInt(Math.random()*100));
+bst.insert(parseInt(Math.random()*100));
+bst.insert(parseInt(Math.random()*100));
+
 refreshTreeStructure();
-let find = (key, root) => {
-    if (root == undefined) return;
-    refreshTreeStructure(root.name);
-    if (root.name == key) {
+
+const find = (key, root) => {
+    return new Promise((resolve) => {
+      if (root == undefined) {
+        resolve();
+        return;
+      }
+      refreshTreeStructure(root.name);
+      if (root.name == key) {
         changeHeading(`${key} Found`);
         clearMeassge();
-        if (willDelete == true)
-            bst.remove(key);
-        setTimeout(() => {
-            refreshTreeStructure(root.name);
-        }, delay);
-        return;
-    }
-    else if (root.children != undefined && root.children.length == 2) {
-        if (root.name > key) {
-            setTimeout(find, delay, key, root.children[0]);
+        if (willDelete == true) {
+          bst.remove(key);
+          clearMeassge();
+          appendMessage(`${key} Deleted`);
         }
-        else {
-            setTimeout(find, delay, key, root.children[1]);
-        }
-    }
-    else if (root.children != undefined && root.children.length == 1) {
 
-        if (root.name > key && root.name > root.children[0].name) {
-            setTimeout(find, delay, key, root.children[0]);
-        }
-        else if (root.name < key && root.name < root.children[0].name) {
-            setTimeout(find, delay, key, root.children[0]);
+        setTimeout(() => {
+          refreshTreeStructure(root.name);
+          resolve();
+        }, delay);
+      }
+      else if (root.children != undefined && root.children.length == 2) {
+        if (root.name > key) {
+          setTimeout(() => {
+            find(key, root.children[0]).then(resolve);
+          }, delay);
         }
         else {
-            refreshTreeStructure(null);
-            changeHeading(`${key} Not found`);
-            clearMeassge();
+          setTimeout(() => {
+            find(key, root.children[1]).then(resolve);
+          }, delay);
         }
-    }
-    else {
+      }
+  
+      else if (root.children != undefined && root.children.length == 1) {
+        if (
+          (root.name > key && root.name > root.children[0].name) ||
+          (root.name < key && root.name < root.children[0].name)
+        ) {
+          setTimeout(() => {
+            find(key, root.children[0]).then(resolve);
+          }, delay);
+        }
+        else {
+          refreshTreeStructure(null);
+          changeHeading(`${key} Not found`);
+          clearMeassge();
+          resolve();
+        }
+      }
+  
+      else {
         refreshTreeStructure(null);
         changeHeading(`${key} Not found`);
         clearMeassge();
-    }
-}
+        resolve();
+      }
+    });
+  };
+  
+
+
 let forms = Array.from(document.forms);
 forms.forEach((form) => {
     form.addEventListener("submit", (event) => {
@@ -74,14 +100,15 @@ forms.forEach((form) => {
             clearMeassge();
             let msg = "";
             let inputBox = event.target[0];
-            let value = inputBox.value;
+            let value = parseInt(inputBox.value);
             inputBox.inputMode = "none";
             setTimeout(() => {
                 inputBox.inputMode = "numeric";
             }, 50);
             inputBox.value = "";
-            if (value == "" || Number.isInteger(parseInt(value)) == false) {
+            if (value == "" || Number.isInteger((value)) == false) {
                 msg = "Wrong input\nKindly insert an integer value.";
+                isRunningSomething = false;
             }
             else {
                 switch (event.target.id) {
@@ -89,20 +116,24 @@ forms.forEach((form) => {
                         bst.insert(value);
                         msg = `${value} is inserted`;
                         refreshTreeStructure(value, true);
+                        isRunningSomething = false;
                         break;
                     case 'form2':
                         willDelete = true;
-                        find(value, tree);
+                        find(value, tree).then(()=>{
+                            isRunningSomething = false;
+                        });
                         break;
                     case 'form3':
                         willDelete = false;
-                        find(value, tree);
+                        find(value, tree).then(()=>{
+                            isRunningSomething = false;
+                        });
 
                         break;
                 }
             }
             appendMessage(msg);
-            isRunningSomething = false;
         }
     });
 });
@@ -155,7 +186,6 @@ document.querySelectorAll(".traversal")
                            refreshTreeStructure();
                            isRunningSomething = false;
                       });
-                        // console.log(e);
                 }
             }
 

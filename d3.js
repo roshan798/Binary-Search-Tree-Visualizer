@@ -15,19 +15,6 @@ export const plot = (treeData, currValue,isInserting) => {
   addLink(g,nodes,currValue,isInserting);
   addNode(g,nodes, currValue,isInserting);
 };
-
-export function getPosition(val) {
-let textElements = d3.selectAll("text")
-  .filter(function() {
-    return d3.select(this).text() == val;
-  });
-
-  let position;
-textElements.each(function(d,i) {
-  position = this.getBoundingClientRect(); // Get bounding box
-});
-return position;
-}
 function addNode(g,nodes, currValue,isInserting) {
   var node = g
     .selectAll(".node")

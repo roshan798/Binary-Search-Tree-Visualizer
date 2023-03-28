@@ -15,7 +15,7 @@ body {
   font-family: sans-serif;
   background: linear-gradient(65deg,#1c2229,#2f3841);
   font-family: Arial, Helvetica, sans-serif;
-  height: 100vh;
+  overflow: scroll;
 }
 
 path.link {
@@ -100,7 +100,6 @@ input {
 }
 
 .form-container {
-  height: calc(100% - 3rem);
   width: 250px;
   position: absolute;
   left: 0;
