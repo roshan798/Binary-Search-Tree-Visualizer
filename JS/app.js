@@ -22,10 +22,6 @@ let refreshTreeStructure = (currValue, isInserting) => {
 }
 
 bst.insert(parseInt(Math.random()*100));
-bst.insert(parseInt(Math.random()*100));
-bst.insert(parseInt(Math.random()*100));
-bst.insert(parseInt(Math.random()*100));
-
 refreshTreeStructure();
 
 const find = (key, root) => {
